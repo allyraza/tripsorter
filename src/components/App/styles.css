@@ -1,0 +1,13 @@
+/**
+ * App
+ */
+.app {
+	margin-top: calc(10vh);
+}
+
+.app__header {
+  margin-bottom: var(--margin);
+}
+
+.app__main {}
+.app__footer {}

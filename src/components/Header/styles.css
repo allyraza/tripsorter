@@ -1,0 +1,45 @@
+/**
+ * Header
+ */
+.header {
+  padding: calc(var(--padding) * 2);
+  background-color: var(--background-color-secondary);
+  box-shadow: 0 1px 5px 0 rgba(0,0,0,0.16);
+  border-radius: var(--border-radius);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header__logo {
+  margin-bottom: var(--margin);
+}
+
+.header__search {
+  width: 100%;
+}
+  
+  
+/**
+ * Search
+ */
+.search {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.search__input {
+  width: 100%;
+  display: block;
+  appearance: none;
+  outline: none;
+  margin: 0 0 calc(var(--margin) / 1.5) 0;
+  padding: calc(var(--padding) / 1.5);
+  border: 0;
+  border-radius: var(--border-radius);
+  font-family: var(--font-family);
+  font-size: 1.5em;
+  transition: all 0.12s;
+}

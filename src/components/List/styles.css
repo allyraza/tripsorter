@@ -1,0 +1,15 @@
+/**
+ * Gist list
+ */
+.list {}
+.list__header {}
+
+.list__title {
+  color: var(--color-secondary);
+  margin-bottom: var(--margin);
+  font-weight: normal;
+}
+
+.list__card {
+  margin-bottom: var(--margin);
+} 

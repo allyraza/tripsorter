@@ -1,0 +1,40 @@
+/**
+ * Card
+ */
+.card {
+  background-color: #ffffff;
+  border-radius: var(--border-radius);
+  position: relative;
+}
+
+.card__body {
+  padding: var(--padding);
+  display: flex;
+  justify-content: space-between;
+  align-items: initial;
+}
+
+.card__link {
+  display: inline-block;
+}
+
+.card__text {
+  color: var(--color-default);
+}
+
+.card__footer {
+  border-top: 1px solid var(--border-color);
+  padding: var(--padding);
+}
+
+.card__forks {
+  display: flex;
+}
+
+.card__avatar + .card__avatar {
+  margin-left: calc(var(--margin) / 2);
+}
+
+.card--empty .card__body {
+  display: block;
+}

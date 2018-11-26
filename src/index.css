@@ -1,0 +1,83 @@
+/**
+ * Tripsorter styles
+ * @author Ali Raza
+ *
+ * Table of content
+ *=====================================================
+ 1. Global
+ 2. Layout
+ 3. Components
+    * Avatar
+    * Badge
+    * Footer
+    * Gist List
+    * Gist
+    * GistEmpty
+    * Header
+    * Loader
+    * Logo
+    * Search
+    * Button
+    * Link
+ 4. Utils 
+ *====================================================*/
+
+ :root {
+  /* font */
+  --font-family: "Avenir Next", "Avenir", system-ui, -apple-system, BlinkMacSystemFont, "Avenir Next", "Avenir", "Segoe UI", "Lucida Grande", "Helvetica Neue", "Helvetica", "Fira Sans", "Roboto", "Noto", "Droid Sans", "Cantarell", "Oxygen", "Ubuntu", "Franklin Gothic Medium", "Century Gothic", "Liberation Sans", sans-serif;
+
+  /* spacing */
+  --margin: 1.5rem;
+  --padding: 1.5rem;
+
+  /* border */
+  --border-radius: 4px;
+  --border-color: #efefef;
+
+  /* text color */
+  --color: #333333;
+  --color-default: #666666;
+  --color-primary: #09c98c;
+  --color-secondary: #3c454b;
+
+  /* background color */
+  --background-color: #f5f5f5;
+  --background-color-light: #eeeeee;
+  --background-color-primary: #09c98c;
+  --background-color-secondary: #3c454b;
+}
+
+/**
+ * Global
+ *====================================================*/
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+  background-color: var(--background-color);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/**
+ * Layout
+ *====================================================*/
+ .container {
+  padding: 0 calc(var(--margin) * 2);
+  width: 100%;
+  margin: 0 auto;
+}
+
+@media (min-width: 1200px) {
+  .container {
+    width: 800px;
+  }
+}
+
+/**
+ * Components
+ *====================================================*/

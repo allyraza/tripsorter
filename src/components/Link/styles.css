@@ -1,0 +1,10 @@
+/**
+ * Link
+ */
+.link {
+  color: var(--color-primary);
+}
+
+.link--bold {
+  font-weight: 500;
+}

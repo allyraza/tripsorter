@@ -1,0 +1,41 @@
+/**
+ * Button
+ */
+.button {   
+  appearance: none;
+  cursor: pointer;
+  outline: none;
+  padding: var(--padding);
+  user-select: none;
+  -webkit-font-smoothing: antialiased;
+  white-space: nowrap;
+  background-color: var(--background-color-primary);
+  border: 0;
+  border-radius: var(--border-radius);
+  color: #fff;
+  font-family: var(--font-family);
+  font-size: 1.5em;
+  font-weight: 500;
+  transition: all 0.12s;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.button__icon {
+  fill: #ffffff;
+}
+
+.button__text {
+  padding: 0 calc(var(--padding) / 2) ;
+}
+
+.button--block {
+  width: 100%;
+}
+
+.icon {
+  width: 32px;
+  height: 32px;
+}

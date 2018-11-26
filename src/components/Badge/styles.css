@@ -1,0 +1,16 @@
+/**
+ * Badge
+ */
+.badge {
+  background-color: var(--background-color-light);
+  font-size: 12px;
+  border-radius: 2px;
+  padding: 2px calc(var(--margin) / 3);
+  color: rgba(0,0,0,0.5);
+  font-weight: 500;
+  text-transform: uppercase;
+}
+
+.badge + .badge {
+  margin-left: calc(var(--margin) / 3);
+}
