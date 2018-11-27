@@ -9,6 +9,8 @@ import {
   reduceOptions,
   filterOptions,
   shortestPath,
+  makeGraph,
+  fastest,
   SORTBY_CHEAPEST,
 } from '../../helpers.js';
 
@@ -20,13 +22,15 @@ class App extends Component {
       items: [],
       options: [],
       currency: "$",
-      origin: '',
-      destination: '',
+      departure: '',
+      arrival: '',
       sortBy: SORTBY_CHEAPEST,
       isLoading: false,
+      total: 0,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleReponse = this.handleReponse.bind(this);
     this.handleSortByChange = this.handleSortByChange.bind(this);
     this.handleToChange = this.handleToChange.bind(this);
     this.handleFromChange = this.handleFromChange.bind(this);
@@ -44,35 +48,45 @@ class App extends Component {
   }
 
   handleSubmit(e) {
+    e.preventDefault();
+
     this.setState({isLoading: true});
-    setTimeout(this.handleReponse, Math.max(100, Math.random()*500));
+    setTimeout(this.handleReponse, Math.max(300, Math.random()*1000));
   }
 
   handleReponse() {
     const {deals} = response;
-    this.setState(state => ({
-      items: shortestPath(deals, state.origin, state.destination, state.sortBy),
-      isLoading: false,
-    }));
+
+    this.setState(state => {
+      var res = shortestPath(deals, state.departure, state.arrival, state.sortBy);
+      
+      return {
+        items: res.path,
+        total: res.total,
+        isLoading: false,
+      };
+    });
   }
 
   handleToChange(e) {
-    e.preventDefault();
-    this.setState({destination: e.target.value});
+    this.setState({arrival: e.target.value});
+
+    console.log( 
+      makeGraph(response.deals, fastest)
+    );
+    
   }
 
   handleFromChange(e) {
-    e.preventDefault();
-    this.setState({origin: e.target.value});
+    this.setState({departure: e.target.value});
   }
 
   handleSortByChange(e) {
-    e.preventDefault();
     this.setState({sortBy: e.target.value});
   }
 
   render() {
-    var {items, currency, options, origin, destination, sortBy} = this.state;
+    var {items, currency, options, departure, arrival, sortBy, total} = this.state;
 
     return (
       <div className="app container">
@@ -81,13 +95,13 @@ class App extends Component {
           handleToChange={this.handleToChange}
           handleFromChange={this.handleFromChange}
           handleSortByChange={this.handleSortByChange}
-          origin={origin}
-          destination={destination}
+          departure={departure}
+          arrival={arrival}
           sortBy={sortBy}
           options={options}
         />
         <main className="app__main">
-          <List items={items.slice(0, 10)} currency={currency} isLoading={this.state.isLoading}/>
+          <List items={items} total={total} currency={currency} isLoading={this.state.isLoading}/>
         </main>
         <Footer/>
       </div>

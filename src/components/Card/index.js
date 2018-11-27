@@ -11,7 +11,7 @@ const Card = ({item, currency, className}) => {
 		<article className={"card " + className}>
 			<div className="card__body">
         <div className="card__info">
-          <h3 className="card__text"><span>{item.departure}</span> > <span>{item.arrival}</span></h3>
+          <h3 className="card__text"><span>{item}</span> > <span>{item}</span></h3>
           <p>Cost: {cost}</p>
           <p>Duration: {parseInt(item.duration.h)} hours {parseInt(item.duration.m)} minutes</p>
         </div>

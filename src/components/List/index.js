@@ -1,15 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import './styles.css';
 import Card from '../Card';
 import CardEmpty from '../CardEmpty';
 
-
-const List = ({items, currency, isLoading}) => {
+const List = ({items, currency, isLoading, total}) => {
   return (
     <section className="list">
       <header className="list__header">
-        {!!items.length && <h3 className="list__title"><strong>{items.length}</strong> {items.length > 1 ? "deals" : "deal"} found</h3>}
+        {!!items.length && <h3 className="list__title"><strong>{items.length}</strong> {total > 1 ? "deals" : "deal"} found</h3>}
       </header>
 
       <div className="list__body">
@@ -18,10 +16,6 @@ const List = ({items, currency, isLoading}) => {
       </div>
     </section>
   );
-};
-
-List.propTypes = {
-  items: PropTypes.array
 };
 
 export default List;

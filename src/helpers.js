@@ -1,7 +1,7 @@
 export const SORTBY_CHEAPEST = 'cheapest';
 export const SORTBY_FASTEST = 'fastest';
 
-export function reduceOptions(acc, item, properties) { 
+export function reduceOptions(acc, item) { 
   acc.push(item.departure);
   acc.push(item.arrival);
   return acc; 
@@ -11,14 +11,14 @@ export function filterOptions(item, i, collection) {
   return collection.indexOf(item) === i;
 }
 
-function makeGraph(data, fn) {
+export function makeGraph(data, fn) {
   var weights = {};
 
   return data.reduce((a, i) => {
     i.weight = fn(i);
     a[i.departure] = a[i.departure] || {};
-    
-    if (!weights[i.departure] || weights[i.departure].weight < i.weight) {
+
+    if (!weights[i.departure] || i.weight < weights[i.departure]) {
       a[i.departure][i.arrival] = i;
     }
     
@@ -26,11 +26,11 @@ function makeGraph(data, fn) {
   }, {});
 }
 
-function cheapest(i) {
+export function cheapest(i) {
   return parseInt(i.cost);
 }
 
-function fastest(i) {
+export function fastest(i) {
   return parseInt(i.duration.h)*60 + parseInt(i.duration.m);
 }
 
@@ -53,6 +53,7 @@ function distance(weights, searched) {
 function makePath(path, end) {
   let result = [end];
   let parent = path[end];
+
   while (parent) {
     result.unshift(parent);
     parent = path[parent];

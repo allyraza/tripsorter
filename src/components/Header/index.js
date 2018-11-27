@@ -12,8 +12,8 @@ const Header = ({
   handleFromChange, 
   handleSortByChange, 
   handleSubmit, 
-  origin,
-  destination,
+  departure,
+  arrival,
   sortBy,
   options
 }) => {
@@ -26,11 +26,11 @@ const Header = ({
 
       <div className="header__search">
         <form className="search" onSubmit={handleSubmit}>
-          <select className="search__input" name="form" value={origin} onChange={handleFromChange}>
+          <select className="search__input" name="form" value={departure} onChange={handleFromChange}>
             <option value="" disabled>From</option>
             {!!options && options.map((o, i) => <option value={o} key={i}>{o}</option>)}
           </select>
-          <select className="search__input" name="to" value={destination} onChange={handleToChange} placeholder="To">
+          <select className="search__input" name="to" value={arrival} onChange={handleToChange} placeholder="To">
             <option value="" disabled>To</option>
             {!!options.length && options.map((o, i) => <option value={o} key={i}>{o}</option>)}
           </select>
