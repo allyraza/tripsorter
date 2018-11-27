@@ -1,8 +1,8 @@
 import React from 'react';
 import './styles.css';
-import Badge from '../Badge';
-import Avatar from '../Avatar';
-import {formatCurrency} from '../../helpers.js';
+// import Badge from '../Badge';
+import {formatCurrency} from '../../helpers.js'; 
+
 
 const Card = ({item, currency, className}) => {
   var cost = formatCurrency(item.cost, currency);

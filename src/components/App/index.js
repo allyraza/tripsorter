@@ -4,9 +4,12 @@ import response from '../../fixtures/response.json';
 import Header from '../Header';
 import Footer from '../Footer';
 import List from '../List';
+
 import {
-  reduceOptions, 
-  filterOptions
+  reduceOptions,
+  filterOptions,
+  shortestPath,
+  SORTBY_CHEAPEST,
 } from '../../helpers.js';
 
 class App extends Component {
@@ -17,12 +20,16 @@ class App extends Component {
       items: [],
       options: [],
       currency: "$",
+      origin: '',
+      destination: '',
+      sortBy: SORTBY_CHEAPEST,
       isLoading: false,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.handleError = this.handleError.bind(this);
-    this.handleChange = this.handleChange.bind(this);
+    this.handleSortByChange = this.handleSortByChange.bind(this);
+    this.handleToChange = this.handleToChange.bind(this);
+    this.handleFromChange = this.handleFromChange.bind(this);
   }
 
   componentDidMount() {
@@ -30,7 +37,6 @@ class App extends Component {
     var options = deals.reduce(reduceOptions, []).filter(filterOptions);
 
     this.setState({
-      items: deals, 
       options: options,
       currency: currency,
       isLoading: false
@@ -38,36 +44,48 @@ class App extends Component {
   }
 
   handleSubmit(e) {
-    // body...
+    this.setState({isLoading: true});
+    setTimeout(this.handleReponse, Math.max(100, Math.random()*500));
   }
 
-  handleError(response) {
-    if (!response.ok) {
-      this.setState({isLoading: false});
-
-      const error = Object.assign({}, response, {
-        status: response.status,
-        statusText: response.statusText,
-      });
-
-      return Promise.reject(error);
-    }
-
-    return response;
+  handleReponse() {
+    const {deals} = response;
+    this.setState(state => ({
+      items: shortestPath(deals, state.origin, state.destination, state.sortBy),
+      isLoading: false,
+    }));
   }
 
-  handleChange(e) {
-    e.preventDefault()
+  handleToChange(e) {
+    e.preventDefault();
+    this.setState({destination: e.target.value});
+  }
 
-    this.setState({username: e.target.value});
+  handleFromChange(e) {
+    e.preventDefault();
+    this.setState({origin: e.target.value});
+  }
+
+  handleSortByChange(e) {
+    e.preventDefault();
+    this.setState({sortBy: e.target.value});
   }
 
   render() {
-    var {items, currency, options} = this.state;
+    var {items, currency, options, origin, destination, sortBy} = this.state;
 
     return (
       <div className="app container">
-        <Header handleSubmit={this.handleSubmit} handleChange={this.handleChange} options={options}/>
+        <Header 
+          handleSubmit={this.handleSubmit}
+          handleToChange={this.handleToChange}
+          handleFromChange={this.handleFromChange}
+          handleSortByChange={this.handleSortByChange}
+          origin={origin}
+          destination={destination}
+          sortBy={sortBy}
+          options={options}
+        />
         <main className="app__main">
           <List items={items.slice(0, 10)} currency={currency} isLoading={this.state.isLoading}/>
         </main>
