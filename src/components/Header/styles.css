@@ -35,11 +35,23 @@
   display: block;
   appearance: none;
   outline: none;
-  margin: 0 0 calc(var(--margin) / 1.5) 0;
-  padding: calc(var(--padding) / 1.5);
+  margin: 0 0 var(--margin) 0;
+  padding: var(--padding);
   border: 0;
   border-radius: var(--border-radius);
   font-family: var(--font-family);
   font-size: 1.5em;
   transition: all 0.12s;
+}
+
+.search__label {
+  cursor: pointer;
+}
+
+.search__switch {
+  margin-bottom: var(--margin);
+}
+
+.search__radio {
+  display: none;
 }

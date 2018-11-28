@@ -10,7 +10,7 @@
   -webkit-font-smoothing: antialiased;
   white-space: nowrap;
   background-color: var(--background-color-primary);
-  border: 0;
+  border: 1px solid var(--border-color-primary);
   border-radius: var(--border-radius);
   color: #fff;
   font-family: var(--font-family);
@@ -33,6 +33,38 @@
 
 .button--block {
   width: 100%;
+}
+
+.button--small {
+  padding: calc(var(--padding)/2) calc(var(--padding) * 2);
+  font-size: 17px;
+  font-weight: 500;
+}
+
+.button--outline {
+  background-color: transparent;
+}
+
+
+/**
+ * Button group
+ */
+.button-group {
+  display: flex;
+}
+
+.button-group .button {
+  cursor: pointer;
+}
+
+.button-group .button:first-child {
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+}
+
+.button-group .button:last-child {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
 }
 
 .icon {

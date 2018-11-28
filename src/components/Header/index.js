@@ -8,10 +8,8 @@ import {
 } from '../../helpers.js';
 
 const Header = ({
-  handleToChange, 
-  handleFromChange, 
-  handleSortByChange, 
-  handleSubmit, 
+  handleChange,
+  handleSubmit,
   departure,
   arrival,
   sortBy,
@@ -26,19 +24,26 @@ const Header = ({
 
       <div className="header__search">
         <form className="search" onSubmit={handleSubmit}>
-          <select className="search__input" name="form" value={departure} onChange={handleFromChange}>
+          <select className="search__input" name="departure" value={departure} onChange={handleChange}>
             <option value="" disabled>From</option>
             {!!options && options.map((o, i) => <option value={o} key={i}>{o}</option>)}
           </select>
-          <select className="search__input" name="to" value={arrival} onChange={handleToChange} placeholder="To">
+          <select className="search__input" name="arrival" value={arrival} onChange={handleChange} placeholder="To">
             <option value="" disabled>To</option>
             {!!options.length && options.map((o, i) => <option value={o} key={i}>{o}</option>)}
           </select>
-          
-          <input type="radio" name="sortby" id="cheapest" onChange={handleSortByChange} value="cheapest" checked={SORTBY_CHEAPEST === sortBy}/>
-          <label htmlFor="cheapest">Cheapest</label>
-          <input type="radio" name="sortby" id="fastest" onChange={handleSortByChange} value="fastest" checked={SORTBY_FASTEST === sortBy}/>
-          <label htmlFor="fastest">Fastest</label>
+
+          <div className="button-group search__switch">
+            <label className={"search__label button button--small " + (SORTBY_CHEAPEST === sortBy ? "" : "button--outline")} htmlFor="cheapest">
+              <input className="search__radio" type="radio" name="sortBy" id="cheapest" onChange={handleChange} value="cheapest" checked={SORTBY_CHEAPEST === sortBy}/>
+              Cheapest
+            </label>
+            <label className={"search__label button button--small " + (SORTBY_FASTEST === sortBy ? "" : "button--outline")} htmlFor="fastest">
+              <input className="search__radio" type="radio" name="sortBy" id="fastest" onChange={handleChange} value="fastest" checked={SORTBY_FASTEST === sortBy}/>
+              Fastest
+            </label>
+          </div>
+
           <Button className="button--block search__button" text="Search"/>
         </form>
       </div>

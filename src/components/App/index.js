@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './styles.css';
 import response from '../../fixtures/response.json';
 import Header from '../Header';
@@ -11,6 +11,7 @@ import {
   shortestPath,
   makeGraph,
   fastest,
+  cheapest,
   SORTBY_CHEAPEST,
 } from '../../helpers.js';
 
@@ -19,6 +20,8 @@ class App extends Component {
     super(props)
 
     this.state = {
+      cheapGraph: [],
+      fastGraph: [],
       items: [],
       options: [],
       currency: "$",
@@ -31,16 +34,16 @@ class App extends Component {
 
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReponse = this.handleReponse.bind(this);
-    this.handleSortByChange = this.handleSortByChange.bind(this);
-    this.handleToChange = this.handleToChange.bind(this);
-    this.handleFromChange = this.handleFromChange.bind(this);
+    this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount() {
-    let {deals, currency} = response;
-    var options = deals.reduce(reduceOptions, []).filter(filterOptions);
+    const {deals, currency} = response;
+    const options = deals.reduce(reduceOptions, []).filter(filterOptions);
 
     this.setState({
+      cheapGraph: makeGraph(deals, cheapest),
+      fastGraph: makeGraph(deals, fastest),
       options: options,
       currency: currency,
       isLoading: false
@@ -55,53 +58,39 @@ class App extends Component {
   }
 
   handleReponse() {
-    const {deals} = response;
+    this.setState(({departure, arrival, sortBy, fastGraph, cheapGraph}) => {
+      const graph = SORTBY_CHEAPEST === sortBy ? cheapGraph : fastGraph;
+      console.log(cheapGraph, fastGraph);return;
+      const {path, total} = shortestPath(graph, departure,  arrival);
 
-    this.setState(state => {
-      var res = shortestPath(deals, state.departure, state.arrival, state.sortBy);
-      
       return {
-        items: res.path,
-        total: res.total,
+        items: path,
+        total: total,
         isLoading: false,
       };
     });
   }
 
-  handleToChange(e) {
-    this.setState({arrival: e.target.value});
-
-    console.log( 
-      makeGraph(response.deals, fastest)
-    );
-    
-  }
-
-  handleFromChange(e) {
-    this.setState({departure: e.target.value});
-  }
-
-  handleSortByChange(e) {
-    this.setState({sortBy: e.target.value});
+  handleChange(e) {
+    this.setState({[e.target.name]: e.target.value});
   }
 
   render() {
-    var {items, currency, options, departure, arrival, sortBy, total} = this.state;
+    const {items, currency, options, departure, arrival, sortBy, total, isLoading} = this.state;
+    const {handleChange, handleSubmit} = this;
 
     return (
       <div className="app container">
         <Header 
-          handleSubmit={this.handleSubmit}
-          handleToChange={this.handleToChange}
-          handleFromChange={this.handleFromChange}
-          handleSortByChange={this.handleSortByChange}
+          handleSubmit={handleSubmit}
+          handleChange={handleChange}
           departure={departure}
           arrival={arrival}
           sortBy={sortBy}
           options={options}
         />
         <main className="app__main">
-          <List items={items} total={total} currency={currency} isLoading={this.state.isLoading}/>
+          <List items={items} total={total} currency={currency} isLoading={isLoading}/>
         </main>
         <Footer/>
       </div>
