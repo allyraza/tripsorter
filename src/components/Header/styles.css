@@ -34,6 +34,7 @@
   width: 100%;
   display: block;
   outline: none;
+  -webkit-appearance: none;
   margin: 0 0 var(--margin) 0;
   padding: var(--padding);
   border: 0;
