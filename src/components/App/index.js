@@ -35,6 +35,7 @@ class App extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleReponse = this.handleReponse.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.handleReset = this.handleReset.bind(this);
   }
 
   componentDidMount() {
@@ -75,7 +76,6 @@ class App extends Component {
   handleReset(e) {
     this.setState({
       items: [],
-      options: [],
       currency: "USD",
       departure: '',
       arrival: '',
@@ -92,7 +92,7 @@ class App extends Component {
 
   render() {
     const {items, currency, options, departure, arrival, sortBy, cost, duration, isLoading} = this.state;
-    const {handleChange, handleSubmit} = this;
+    const {handleChange, handleSubmit, handleReset} = this;
 
     return (
       <div className="app container">
@@ -108,6 +108,7 @@ class App extends Component {
           <List 
             items={items} 
             cost={cost}
+            handleReset={handleReset}
             duration={duration}
             departure={departure}
             arrival={arrival}

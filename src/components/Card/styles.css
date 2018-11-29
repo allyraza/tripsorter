@@ -33,5 +33,5 @@
 }
 
 .card--empty .card__body {
-  display: block;
+  display: flex;
 }
