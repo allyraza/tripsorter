@@ -13,3 +13,7 @@
 .list__card {
   margin-bottom: var(--margin);
 } 
+
+.list__footer {
+  margin-bottom: var(--margin);
+}

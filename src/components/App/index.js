@@ -10,6 +10,7 @@ import {
   filterOptions,
   shortestPath,
   makeGraph,
+  makeResult,
   fastest,
   cheapest,
   SORTBY_CHEAPEST,
@@ -20,16 +21,15 @@ class App extends Component {
     super(props)
 
     this.state = {
-      cheapGraph: [],
-      fastGraph: [],
       items: [],
       options: [],
-      currency: "$",
+      currency: "USD",
       departure: '',
       arrival: '',
+      cost: 0,
+      duration: 0,
       sortBy: SORTBY_CHEAPEST,
       isLoading: false,
-      total: 0,
     };
 
     this.handleSubmit = this.handleSubmit.bind(this);
@@ -49,7 +49,7 @@ class App extends Component {
       isLoading: false
     });
   }
-
+  
   handleSubmit(e) {
     e.preventDefault();
 
@@ -60,14 +60,29 @@ class App extends Component {
   handleReponse() {
     this.setState(({departure, arrival, sortBy, fastGraph, cheapGraph}) => {
       const graph = SORTBY_CHEAPEST === sortBy ? cheapGraph : fastGraph;
-      console.log(cheapGraph, fastGraph);return;
-      const {path, total} = shortestPath(graph, departure,  arrival);
+      const {path} = shortestPath(graph, departure,  arrival);
+      const {items, cost, duration} = makeResult(response.deals, path, arrival);
 
       return {
-        items: path,
-        total: total,
+        items: items,
+        cost: cost,
+        duration: duration,
         isLoading: false,
       };
+    });
+  }
+
+  handleReset(e) {
+    this.setState({
+      items: [],
+      options: [],
+      currency: "USD",
+      departure: '',
+      arrival: '',
+      cost: 0,
+      duration: 0,
+      sortBy: SORTBY_CHEAPEST,
+      isLoading: false,
     });
   }
 
@@ -76,7 +91,7 @@ class App extends Component {
   }
 
   render() {
-    const {items, currency, options, departure, arrival, sortBy, total, isLoading} = this.state;
+    const {items, currency, options, departure, arrival, sortBy, cost, duration, isLoading} = this.state;
     const {handleChange, handleSubmit} = this;
 
     return (
@@ -90,7 +105,15 @@ class App extends Component {
           options={options}
         />
         <main className="app__main">
-          <List items={items} total={total} currency={currency} isLoading={isLoading}/>
+          <List 
+            items={items} 
+            cost={cost}
+            duration={duration}
+            departure={departure}
+            arrival={arrival}
+            currency={currency} 
+            isLoading={isLoading}
+          />
         </main>
         <Footer/>
       </div>

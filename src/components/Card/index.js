@@ -1,20 +1,18 @@
 import React from 'react';
 import './styles.css';
-// import Badge from '../Badge';
 import {formatCurrency} from '../../helpers.js'; 
 
 
 const Card = ({item, currency, className}) => {
-  var cost = formatCurrency(item.cost, currency);
+  const cost = formatCurrency(item.cost, currency);
+  const {departure, arrival, transport, reference, duration} = item;
 
   return (
 		<article className={"card " + className}>
 			<div className="card__body">
-        <div className="card__info">
-          <h3 className="card__text"><span>{item.departure}</span> > <span>{item.arrival}</span></h3>
-          <p>Cost: {cost}</p>
-          <p>Duration: {parseInt(item.duration.h)} hours {parseInt(item.duration.m)} minutes</p>
-        </div>
+        <h3 className="card__title">{departure} > {arrival}</h3>
+        <strong className="card__currency">{cost}</strong>
+        <p className="card__text">{transport} {reference} for {duration.h}h{duration.m}</p>
 			</div>
 		</article>
 	);

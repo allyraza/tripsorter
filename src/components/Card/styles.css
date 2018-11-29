@@ -11,28 +11,25 @@
   padding: var(--padding);
   display: flex;
   justify-content: space-between;
-  align-items: initial;
+  align-items: center;
+  flex-wrap: wrap;
+  min-height: 100px;
 }
 
-.card__link {
-  display: inline-block;
+.card__title {
+  margin: 0 0 calc(var(--margin)/3) 0;
+  flex: 1 50%;
+}
+
+.card__currency {
+  flex: 1 50%;
+  text-align: right;
+  align-self: flex-start;
 }
 
 .card__text {
   color: var(--color-default);
-}
-
-.card__footer {
-  border-top: 1px solid var(--border-color);
-  padding: var(--padding);
-}
-
-.card__forks {
-  display: flex;
-}
-
-.card__avatar + .card__avatar {
-  margin-left: calc(var(--margin) / 2);
+  margin: 0;
 }
 
 .card--empty .card__body {

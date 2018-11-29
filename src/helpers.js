@@ -1,5 +1,6 @@
 export const SORTBY_CHEAPEST = 'cheapest';
 export const SORTBY_FASTEST = 'fastest';
+export const CURRENCY_EUR = 'EUR';
 
 export function reduceOptions(acc, item) { 
   acc.push(item.departure);
@@ -15,26 +16,27 @@ export function filterOptions(item, i, collection) {
 export function makeGraph(data, fn) {
   let result = {};
   let weights = {};
-
-  for (let d in data) {
-    let {departure, arrival} = data[d];
-    let weight = fn(data[d]);
-    let key = [departure, arrival].join("");
-
+  
+  for (let i in data) {
+    let deal = data[i];
+    deal.weight = fn(deal);
+    let {departure, arrival, weight} = deal;
+    let key = `${departure}_${arrival}`;
     result[departure] = result[departure] || {};
-
-    if (!weights.hasOwnProperty(key) || weight < weights[key]) {
-      result[departure][arrival] = Object.assign({weight: weight}, data[d]);
+    
+    if (!weights[key] || weight < weights[key]) {
       weights[key] = weight;
+      result[departure][arrival] = {weight: weight, index: i};
     }
   }
-
-console.log(result, weights);
+  
   return result;
 }
 
-export function cheapest(i) {
-  return parseInt(i.cost);
+export function cheapest(deal) {
+  let cost = parseInt(deal.cost);
+  let discount = cost * parseInt(deal.discount) / 100;
+  return cost - discount;
 }
 
 export function fastest(i) {
@@ -42,72 +44,87 @@ export function fastest(i) {
 }
 
 function distance(weights, searched) {
-  var m = null;
+  let min = null;
   
-  for (var i in weights) {    
-    if (searched[i]) {
-     continue;
+  for (let i in weights) {
+    if (searched.hasOwnProperty(i)) {
+      continue;
     }
-
-    if (!weights[m] || weights[i] < weights[m]) {
-      m = i;
+    
+    if (!min || weights[i] < weights[min]) {
+      min = i;
     }
   }
   
-  return m;
+  return min;
 }
 
-function makePath(path, end) {
-  let result = [];
-  let parent = path[end];
-
-  while (!!parent) {
-    result.unshift(parent);
-    parent = path[parent.departure];
-  }
+export function makeResult(data, path, end) {
+  let parent = parseInt(path[end]);
+  let items = [];
+  let cost = 0;
+  let duration = {
+    h: 0,
+    m: 0,
+  };
   
-  return result;
+  while(parent) {
+    let deal = data[parent];
+    cost += cheapest(deal);
+    
+    duration.h += parseInt(deal.duration.h);
+    duration.m += parseInt(deal.duration.m);
+
+    items.unshift(deal);
+    parent = parseInt(path[deal.departure]);
+  }
+
+  return {
+    items: items,
+    cost: cost,
+    duration: duration
+  };
 }
 
-export function shortestPath(graph, start, end) {
-  const weights = {[end]: null};
-  const path = {[end]: null};
-
-  for (var n in graph[start]) {
-    if (graph.hasOwnProperty(n)) {
-      weights[n] = graph[start][n].weight;
-      path[n] = graph[start];
-    }
-  }
-
+export function shortestPath(graph, start, end, fn) {
+  const weights = {};
+  const path = {};
   const searched = {};
-  var current = distance(weights, searched);
-
+  
+  for (let n in graph[start]) {
+    weights[n] = graph[start][n].weight;
+    path[n] = graph[start][n].index;
+  }
+  
+  let current = distance(weights, searched);
+  
   while (current) {
-    let neighbors = graph[current];
-
-    for (let n in neighbors) {
-      if (n === start || !graph.hasOwnProperty(n)) {
+    for (let i in graph[current]) {
+      if (i === start) {
         continue;
       }
-
-      let newWeight = weights[current] + neighbors[n].weight;
-      if (!weights[n] || weights[n] > newWeight) {
-        weights[n] = newWeight;
-        path[n] = graph[current];
+      
+      let newWeight = weights[current] + graph[current][i].weight;
+      if (!weights[i] || weights[i] > newWeight) {
+        weights[i] = newWeight;
+        path[i] = graph[current][i].index;
       }
     }
-
+    
     searched[current] = true;
     current = distance(weights, searched);
   }
 
   return {
-    total: weights[end],
-    path: makePath(path, end)
+    path: path, 
+    total: weights[end]
   };
 }
 
-export function formatCurrency(amount, currency="$") {
-  return [currency, amount].join("");
+export function formatCurrency(amount, currency) {
+  if (currency === CURRENCY_EUR) {
+    return `${amount}€`
+  }
+
+  return `$${amount}`;
 }
