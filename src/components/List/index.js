@@ -2,7 +2,7 @@ import React from 'react';
 import './styles.css';
 import Card from '../Card';
 import CardEmpty from '../CardEmpty';
-import {formatCurrency} from '../../helpers.js'; 
+import {formatCurrency} from '../../Helpers'; 
 
 const List = ({
   items, 

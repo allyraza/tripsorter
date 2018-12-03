@@ -14,7 +14,7 @@ import {
   fastest,
   cheapest,
   SORTBY_CHEAPEST,
-} from '../../helpers.js';
+} from '../../Helpers';
 
 class App extends Component {
   constructor(props) {

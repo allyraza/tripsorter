@@ -1,6 +1,6 @@
 import React from 'react';
 import './styles.css';
-import {formatCurrency} from '../../helpers.js'; 
+import {formatCurrency} from '../../Helpers'; 
 
 
 const Card = ({item, currency, className}) => {

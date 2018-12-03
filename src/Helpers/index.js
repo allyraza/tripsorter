@@ -12,6 +12,15 @@ export function filterOptions(item, i, collection) {
   return collection.indexOf(item) === i;
 }
 
+export function cheapest(deal) {
+  let cost = parseInt(deal.cost);
+  let discount = cost * parseInt(deal.discount) / 100;
+  return cost - discount;
+}
+
+export function fastest(i) {
+  return parseInt(i.duration.h)*60 + parseInt(i.duration.m);
+}
 
 export function makeGraph(data, fn) {
   let result = {};
@@ -31,16 +40,6 @@ export function makeGraph(data, fn) {
   }
   
   return result;
-}
-
-export function cheapest(deal) {
-  let cost = parseInt(deal.cost);
-  let discount = cost * parseInt(deal.discount) / 100;
-  return cost - discount;
-}
-
-export function fastest(i) {
-  return parseInt(i.duration.h)*60 + parseInt(i.duration.m);
 }
 
 function distance(weights, searched) {

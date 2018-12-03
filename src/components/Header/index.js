@@ -5,7 +5,7 @@ import Button from '../Button';
 import {
   SORTBY_FASTEST,
   SORTBY_CHEAPEST,
-} from '../../helpers.js';
+} from '../../Helpers';
 
 const Header = ({
   handleChange,
