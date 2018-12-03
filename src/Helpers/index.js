@@ -45,7 +45,7 @@ export function makeGraph(data, fn) {
   return result;
 }
 
-function distance(weights, searched) {
+export function distance(weights, searched) {
   let min = null;
 
   for (let i in weights) {

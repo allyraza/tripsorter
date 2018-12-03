@@ -5,6 +5,7 @@ import {
   fastest,
   cheapest,
   makeGraph,
+  distance,
 } from '../';
 
 describe("Helpers", () => {
@@ -106,6 +107,22 @@ describe("Helpers", () => {
       const graph = {};
 
       expect(makeGraph(data, cheapest)).toEqual(graph);
+    });
+  });
+
+  describe("#distance", () => {
+    it("finds a smallest key", () => {
+      const weights = {A: 10, B: 3, C: 7, D: 17};
+      const searched = {};
+
+      expect(distance(weights, searched)).toBe("B");
+    });
+
+    it("finds a smallest key excluding already searched", () => {
+      const weights = {A: 10, B: 3, C: 7, D: 17};
+      const searched = {B: true};
+
+      expect(distance(weights, searched)).toBe("C");
     });
   });
 
