@@ -4,6 +4,7 @@ import {
   reduceOptions,
   fastest,
   cheapest,
+  makeGraph,
 } from '../';
 
 describe("Helpers", () => {
@@ -37,7 +38,7 @@ describe("Helpers", () => {
     });
   });
 
-  describe("#Graph", () => {
+  describe("#fastest", () => {
     it("formats duration in minutes", () => {
       const duration = {
         duration: {h: "02h", m: "15m"}
@@ -46,7 +47,17 @@ describe("Helpers", () => {
       expect(fastest(duration)).toBe(135);
     });
 
-    it("uses the discount and formats cost", () => {
+    it("does not format empty duration", () => {
+      const duration = {
+        duration: {h: null, m: null}
+      };
+
+      expect(fastest(duration)).toBe(0);
+    });
+  });
+
+  describe("#cheapest", () => {
+    it("does apply discount and formats cost", () => {
       const cost = {
         cost: 100,
         discount: 15
@@ -54,5 +65,48 @@ describe("Helpers", () => {
 
       expect(cheapest(cost)).toBe(85);
     });
+
+    it("does not apply discount for no discount", () => {
+      const cost = {
+        cost: 100,
+        discount: 0
+      };
+
+      expect(cheapest(cost)).toBe(100);
+    });
   });
+
+  describe("#makeGraph", () => {
+    it("generates a graph for given dataset", () => {
+      const data = [
+        {departure: "A", arrival: "B", cost: 100},
+        {departure: "B", arrival: "C", cost: 200},
+        {departure: "C", arrival: "A", cost: 200},
+        {departure: "A", arrival: "C", cost: 200},
+      ];
+
+      const graph = {
+        A: {
+          B: {index: 0, weight: 100},
+          C: {index: 3, weight: 200},
+        },
+        B: {
+          C: {index: 1, weight: 200}
+        },
+        C: {
+          A: {index: 2, weight: 200},
+        }
+      };
+
+      expect(makeGraph(data, cheapest)).toEqual(graph);
+    });
+
+    it("does not generate a graph for empty dataset", () => {
+      const data = [];
+      const graph = {};
+
+      expect(makeGraph(data, cheapest)).toEqual(graph);
+    });
+  });
+
 });

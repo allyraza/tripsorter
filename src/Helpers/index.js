@@ -14,47 +14,50 @@ export function filterOptions(item, i, collection) {
 
 export function cheapest(deal) {
   let cost = parseInt(deal.cost);
-  let discount = cost * parseInt(deal.discount) / 100;
+  let discount = cost * (parseInt(deal.discount) || 0) / 100;
   return cost - discount;
 }
 
 export function fastest(i) {
-  return parseInt(i.duration.h)*60 + parseInt(i.duration.m);
+  const h = parseInt(i.duration.h) || 0;
+  const m = parseInt(i.duration.m) || 0;
+
+  return (h * 60) + m;
 }
 
 export function makeGraph(data, fn) {
   let result = {};
   let weights = {};
-  
+
   for (let i in data) {
     let deal = data[i];
     deal.weight = fn(deal);
     let {departure, arrival, weight} = deal;
     let key = `${departure}_${arrival}`;
     result[departure] = result[departure] || {};
-    
+
     if (!weights[key] || weight < weights[key]) {
       weights[key] = weight;
-      result[departure][arrival] = {weight: weight, index: i};
+      result[departure][arrival] = {weight: weight, index: parseInt(i)};
     }
   }
-  
+
   return result;
 }
 
 function distance(weights, searched) {
   let min = null;
-  
+
   for (let i in weights) {
     if (searched.hasOwnProperty(i)) {
       continue;
     }
-    
+
     if (!min || weights[i] < weights[min]) {
       min = i;
     }
   }
-  
+
   return min;
 }
 
@@ -66,11 +69,11 @@ export function makeResult(data, path, end) {
     h: 0,
     m: 0,
   };
-  
+
   while(parent) {
     let deal = data[parent];
     cost += cheapest(deal);
-    
+
     duration.h += parseInt(deal.duration.h);
     duration.m += parseInt(deal.duration.m);
 
