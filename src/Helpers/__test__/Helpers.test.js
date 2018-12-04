@@ -4,8 +4,10 @@ import {
   reduceOptions,
   fastest,
   cheapest,
-  makeGraph,
   distance,
+  makeGraph,
+  makeResult,
+  shortestPath,
 } from '../';
 
 describe("Helpers", () => {
@@ -126,4 +128,58 @@ describe("Helpers", () => {
     });
   });
 
+  describe("#makeResult", () => {
+    it("returns deals for path and calculates total cost and duration", () => {
+      const path = {B: 0, C: 3};
+      const end = "C";
+      const data = [
+        {departure: "A", arrival: "B", cost: 100, duration: {h: "05", m: "15m"}},
+        {departure: "B", arrival: "C", cost: 200, duration: {h: "02", m: "0m"}},
+        {departure: "C", arrival: "A", cost: 200, duration: {h: "01", m: "15m"}},
+        {departure: "A", arrival: "C", cost: 200, duration: {h: "03", m: "15m"}},
+      ];
+      const result = {
+        items: [
+          {departure: "A", arrival: "C", cost: 200, duration: {h: "03", m: "15m"}},
+        ],
+        cost: 200,
+        duration: {h: 3, m: 15}
+      };
+
+      expect(makeResult(data, path, end)).toEqual(result);
+    });
+
+    it("returns an empty result for invalid data", () => {
+      const path = {};
+      const end = "C";
+      const data = [];
+      const result = {
+        items: [],
+        cost: 0,
+        duration: {h: 0, m: 0}
+      };
+
+      expect(makeResult(data, path, end)).toEqual(result);
+    });
+  });
+
+  describe("#shortestPath", () => {
+    it("finds a shortest path between two nodes", () => {
+      const path = {path: {B: 0, C: 3}, total: 200};
+      const graph = {
+        A: {
+          B: {index: 0, weight: 100},
+          C: {index: 3, weight: 200},
+        },
+        B: {
+          C: {index: 1, weight: 200}
+        },
+        C: {
+          A: {index: 2, weight: 200},
+        }
+      };
+
+      expect(shortestPath(graph, "A", "C")).toEqual(path);
+    });
+  });
 });

@@ -92,27 +92,27 @@ export function shortestPath(graph, start, end, fn) {
   const weights = {};
   const path = {};
   const searched = {};
-  
+
   for (let n in graph[start]) {
     weights[n] = graph[start][n].weight;
     path[n] = graph[start][n].index;
   }
-  
+
   let current = distance(weights, searched);
-  
+
   while (current) {
-    for (let i in graph[current]) {
-      if (i === start) {
+    for (let n in graph[current]) {
+      if (n === start) {
         continue;
       }
-      
-      let newWeight = weights[current] + graph[current][i].weight;
-      if (!weights[i] || weights[i] > newWeight) {
-        weights[i] = newWeight;
-        path[i] = graph[current][i].index;
+
+      let newWeight = weights[current] + graph[current][n].weight;
+      if (!weights[n] || weights[n] > newWeight) {
+        weights[n] = newWeight;
+        path[n] = graph[current][n].index;
       }
     }
-    
+
     searched[current] = true;
     current = distance(weights, searched);
   }
